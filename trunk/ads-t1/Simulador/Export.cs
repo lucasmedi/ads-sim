@@ -13,9 +13,8 @@ namespace ads_t1
             var sheet = workbook.CreateSheet("Sheet");
 
             var rowIndex = 0;
-
-            sheet.CreateRow(rowIndex).CreateCell(0).SetCellValue("ADS T1");
-            sheet.CreateRow(rowIndex).CreateCell(1).SetCellValue("Simulador");
+            sheet.CreateRow(0).CreateCell(0).SetCellValue("ADS-T1 Simulador");
+            sheet.AddMergedRegion(new NPOI.SS.Util.CellRangeAddress(0, 0, 0, 1)); 
 
             rowIndex += 2;
             foreach (var fila in filas)

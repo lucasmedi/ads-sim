@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NPOI.SS.UserModel;
 
@@ -10,8 +11,10 @@ namespace ads_t1
 
         public int Servidores { get; set; }
         public int Capacidade { get; set; }
-        public int Perdas { get; set; }
         public int Quantidade { get; set; }
+
+        public int Perdas { get; set; }
+        public int Chegadas { get; set; }
 
         public bool TemPassagem { get; set; }
         public bool TemSaida { get; set; }
@@ -109,6 +112,7 @@ namespace ads_t1
         {
             if (Capacidade == 0 || Quantidade < Capacidade)
             {
+                Chegadas++;
                 Quantidade++;
                 if (Quantidade <= Servidores)
                 {
@@ -187,11 +191,9 @@ namespace ads_t1
         {
             rowIndex++;
             var row = sheet.CreateRow(rowIndex);
-
             row.CreateCell(0).SetCellValue(string.Format("Fila {0}", this.Id));
             row.CreateCell(1).SetCellValue(string.Format("G/G/{0}/{1}", this.Servidores, this.Capacidade));
-            row.CreateCell(2).SetCellValue(string.Format("Perdas: {0}", this.Perdas));
-
+            
             foreach (var item in this.Operacoes)
             {
                 rowIndex++;
@@ -201,6 +203,21 @@ namespace ads_t1
                 if (item.Probabilidade > 0)
                     row.CreateCell(2).SetCellValue(item.Probabilidade.ToString());
             }
+
+            rowIndex++;
+            row = sheet.CreateRow(rowIndex);
+            row.CreateCell(0).SetCellValue("Atendidos:");
+            row.CreateCell(1).SetCellValue(this.Chegadas);
+
+            rowIndex++;
+            row = sheet.CreateRow(rowIndex);
+            row.CreateCell(0).SetCellValue("Perdidos:");
+            row.CreateCell(1).SetCellValue(this.Perdas);
+
+            rowIndex++;
+            row = sheet.CreateRow(rowIndex);
+            row.CreateCell(0).SetCellValue("%Perdas:");
+            row.CreateCell(1).SetCellValue(string.Format("{0}%", Math.Round(((this.Perdas / (decimal)(this.Chegadas+this.Perdas)) * (decimal)100), 2).ToString()));
 
             return rowIndex;
         }
