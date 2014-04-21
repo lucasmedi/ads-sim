@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Xml.Serialization;
+using System.Text;
+using System.IO;
+using System.Collections.Generic;
 
 namespace ads_t1
 {
@@ -19,26 +23,26 @@ namespace ads_t1
             // 2..3 ut CH1
             // 3..5 ut SA1
 
-            simulador = new Simulador(new decimal[] {
-                Convert.ToDecimal(0.1195),
-                Convert.ToDecimal(0.3491),
-                Convert.ToDecimal(0.9832),
-                Convert.ToDecimal(0.7731),
-                Convert.ToDecimal(0.8935),
-                Convert.ToDecimal(0.2103),
-                Convert.ToDecimal(0.0392),
-                Convert.ToDecimal(0.1782)
-            });
+            //simulador = new Simulador(new decimal[] {
+            //    Convert.ToDecimal(0.1195),
+            //    Convert.ToDecimal(0.3491),
+            //    Convert.ToDecimal(0.9832),
+            //    Convert.ToDecimal(0.7731),
+            //    Convert.ToDecimal(0.8935),
+            //    Convert.ToDecimal(0.2103),
+            //    Convert.ToDecimal(0.0392),
+            //    Convert.ToDecimal(0.1782)
+            //});
 
-            id++;
-            fila1 = new Fila(id, 1, 4);
-            fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
-            fila1.AdicionaOperacao(EnumOperacao.Saida, 3, 5);
-            simulador.AdicionaFila(fila1);
+            //id++;
+            //fila1 = new Fila(id, 1, 4);
+            //fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
+            //fila1.AdicionaOperacao(EnumOperacao.Saida, 3, 5);
+            //simulador.AdicionaFila(fila1);
 
-            simulador.AgendaInicio(id, EnumOperacao.Chegada, (decimal)2.5);
+            //simulador.AgendaInicio(id, EnumOperacao.Chegada, (decimal)2.5);
 
-            simulador.Iniciar();
+            //simulador.Iniciar();
 
             #endregion
 
@@ -51,41 +55,41 @@ namespace ads_t1
             // Fila 2: G/G/1/3
             // 3..5 ut SA2
 
-            id = 0;
-            simulador = new Simulador(new decimal[] {
-                Convert.ToDecimal(0.9921),
-                Convert.ToDecimal(0.0004),
-                Convert.ToDecimal(0.5534),
-                Convert.ToDecimal(0.2761),
-                Convert.ToDecimal(0.3398),
-                Convert.ToDecimal(0.8963),
-                Convert.ToDecimal(0.9023),
-                Convert.ToDecimal(0.0132),
-                Convert.ToDecimal(0.4569),
-                Convert.ToDecimal(0.5121),
-                Convert.ToDecimal(0.9208),
-                Convert.ToDecimal(0.0171),
-                Convert.ToDecimal(0.2299),
-                Convert.ToDecimal(0.8545),
-                Convert.ToDecimal(0.6001),
-                Convert.ToDecimal(0.2921)
-            });
+            //id = 0;
+            //simulador = new Simulador(new decimal[] {
+            //    Convert.ToDecimal(0.9921),
+            //    Convert.ToDecimal(0.0004),
+            //    Convert.ToDecimal(0.5534),
+            //    Convert.ToDecimal(0.2761),
+            //    Convert.ToDecimal(0.3398),
+            //    Convert.ToDecimal(0.8963),
+            //    Convert.ToDecimal(0.9023),
+            //    Convert.ToDecimal(0.0132),
+            //    Convert.ToDecimal(0.4569),
+            //    Convert.ToDecimal(0.5121),
+            //    Convert.ToDecimal(0.9208),
+            //    Convert.ToDecimal(0.0171),
+            //    Convert.ToDecimal(0.2299),
+            //    Convert.ToDecimal(0.8545),
+            //    Convert.ToDecimal(0.6001),
+            //    Convert.ToDecimal(0.2921)
+            //});
 
-            id++;
-            fila1 = new Fila(id, 2, 3);
-            fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
-            simulador.AdicionaFila(fila1);
+            //id++;
+            //fila1 = new Fila(id, 2, 3);
+            //fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
+            //simulador.AdicionaFila(fila1);
 
-            id++;
-            fila2 = new Fila(id, 1, 3);
-            fila2.AdicionaOperacao(EnumOperacao.Saida, 3, 5);
-            simulador.AdicionaFila(fila2);
+            //id++;
+            //fila2 = new Fila(id, 1, 3);
+            //fila2.AdicionaOperacao(EnumOperacao.Saida, 3, 5);
+            //simulador.AdicionaFila(fila2);
 
-            fila1.AdicionaOperacao(EnumOperacao.Passagem, 2, 5, fila2.Id);
+            //fila1.AdicionaOperacao(EnumOperacao.Passagem, 2, 5, fila2.Id);
 
-            simulador.AgendaInicio(id - 1, EnumOperacao.Chegada, (decimal)2.5);
+            //simulador.AgendaInicio(id - 1, EnumOperacao.Chegada, (decimal)2.5);
 
-            simulador.Iniciar();
+            //simulador.Iniciar();
 
             #endregion
 
@@ -99,42 +103,42 @@ namespace ads_t1
             // Fila 2: G/G/1/0
             // 4..8 ut SA2
 
-            id = 0;
-            simulador = new Simulador(new decimal[] {
-                Convert.ToDecimal(0.2176),
-                Convert.ToDecimal(0.0103),
-                Convert.ToDecimal(0.1109),
-                Convert.ToDecimal(0.3456),
-                Convert.ToDecimal(0.9910),
-                Convert.ToDecimal(0.2323),
-                Convert.ToDecimal(0.9211),
-                Convert.ToDecimal(0.0322),
-                Convert.ToDecimal(0.1211),
-                Convert.ToDecimal(0.5131),
-                Convert.ToDecimal(0.7208),
-                Convert.ToDecimal(0.9172),
-                Convert.ToDecimal(0.9922),
-                Convert.ToDecimal(0.8324),
-                Convert.ToDecimal(0.5011),
-                Convert.ToDecimal(0.2931)
-            });
+            //id = 0;
+            //simulador = new Simulador(new decimal[] {
+            //    Convert.ToDecimal(0.2176),
+            //    Convert.ToDecimal(0.0103),
+            //    Convert.ToDecimal(0.1109),
+            //    Convert.ToDecimal(0.3456),
+            //    Convert.ToDecimal(0.9910),
+            //    Convert.ToDecimal(0.2323),
+            //    Convert.ToDecimal(0.9211),
+            //    Convert.ToDecimal(0.0322),
+            //    Convert.ToDecimal(0.1211),
+            //    Convert.ToDecimal(0.5131),
+            //    Convert.ToDecimal(0.7208),
+            //    Convert.ToDecimal(0.9172),
+            //    Convert.ToDecimal(0.9922),
+            //    Convert.ToDecimal(0.8324),
+            //    Convert.ToDecimal(0.5011),
+            //    Convert.ToDecimal(0.2931)
+            //});
 
-            id++;
-            fila1 = new Fila(id, 2, 4);
-            fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
-            fila1.AdicionaOperacao(EnumOperacao.Saida, 4, 7, 0, (decimal)0.3);
-            simulador.AdicionaFila(fila1);
+            //id++;
+            //fila1 = new Fila(id, 2, 4);
+            //fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
+            //fila1.AdicionaOperacao(EnumOperacao.Saida, 4, 7, 0, (decimal)0.3);
+            //simulador.AdicionaFila(fila1);
 
-            id++;
-            fila2 = new Fila(id, 1, 0);
-            fila2.AdicionaOperacao(EnumOperacao.Saida, 4, 8);
-            simulador.AdicionaFila(fila2);
+            //id++;
+            //fila2 = new Fila(id, 1, 0);
+            //fila2.AdicionaOperacao(EnumOperacao.Saida, 4, 8);
+            //simulador.AdicionaFila(fila2);
 
-            fila1.AdicionaOperacao(EnumOperacao.Passagem, 4, 7, fila2.Id, (decimal)0.7);
+            //fila1.AdicionaOperacao(EnumOperacao.Passagem, 4, 7, fila2.Id, (decimal)0.7);
 
-            simulador.AgendaInicio(id - 1, EnumOperacao.Chegada, (decimal)3.0);
+            //simulador.AgendaInicio(id - 1, EnumOperacao.Chegada, (decimal)3.0);
 
-            simulador.Iniciar();
+            //simulador.Iniciar();
 
             #endregion
 
@@ -169,6 +173,11 @@ namespace ads_t1
                 Convert.ToDecimal(0.2209)
             });
 
+            LeArquivo leArquivo = new LeArquivo(@"C:\Users\Giovanni_2\Dropbox\PUCRS\Avaliação de desempenho de software\Trabalho 1\ads-sim");
+
+            List<Fila> filas = leArquivo.carregaConteudo();
+            filas = leArquivo.carregaConteudo();
+
             id++;
             fila1 = new Fila(id, 2, 3);
             fila1.AdicionaOperacao(EnumOperacao.Chegada, 1, 2);
@@ -197,18 +206,18 @@ namespace ads_t1
             // 2..3 ut CH1
             // 3..5 ut SA1
 
-            id = 0;
-            simulador = new Simulador(5670, 8);
+            //id = 0;
+            //simulador = new Simulador(5670, 8);
 
-            id++;
-            fila1 = new Fila(id, 1, 4);
-            fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
-            fila1.AdicionaOperacao(EnumOperacao.Saida, 3, 5);
-            simulador.AdicionaFila(fila1);
+            //id++;
+            //fila1 = new Fila(id, 1, 4);
+            //fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
+            //fila1.AdicionaOperacao(EnumOperacao.Saida, 3, 5);
+            //simulador.AdicionaFila(fila1);
 
-            simulador.AgendaInicio(id, EnumOperacao.Chegada, (decimal)2.5);
+            //simulador.AgendaInicio(id, EnumOperacao.Chegada, (decimal)2.5);
 
-            simulador.Iniciar();
+            //simulador.Iniciar();
 
             #endregion
 
@@ -219,22 +228,24 @@ namespace ads_t1
             // 2..3 ut CH1
             // 3..5 ut SA1
 
-            id = 0;
-            simulador = new Simulador(5670, 500);
+            //id = 0;
+            //simulador = new Simulador(5670, 500);
 
-            id++;
-            fila1 = new Fila(id, 1, 4);
-            fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
-            fila1.AdicionaOperacao(EnumOperacao.Saida, 3, 5);
-            simulador.AdicionaFila(fila1);
+            //id++;
+            //fila1 = new Fila(id, 1, 4);
+            //fila1.AdicionaOperacao(EnumOperacao.Chegada, 2, 3);
+            //fila1.AdicionaOperacao(EnumOperacao.Saida, 3, 5);
+            //simulador.AdicionaFila(fila1);
 
-            simulador.AgendaInicio(id, EnumOperacao.Chegada, (decimal)2.5);
+            //simulador.AgendaInicio(id, EnumOperacao.Chegada, (decimal)2.5);
 
-            simulador.Iniciar();
+            //simulador.Iniciar();
 
             #endregion
 
             Console.ReadKey();
         }
     }
+
+
 }

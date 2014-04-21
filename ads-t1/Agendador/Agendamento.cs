@@ -9,5 +9,7 @@ namespace ads_t1
         public decimal TempoAtual { get; set; }
         public int IdFilaDestino { get; set; }
         public decimal Probabilidade { get; set; }
+
+        public Agendamento() { }
     }
 }
