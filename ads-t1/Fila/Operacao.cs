@@ -9,8 +9,6 @@ namespace ads_t1
         public int IdFilaDestino { get; set; }
         public decimal Probabilidade { get; set; }
 
-        public Operacao() { }
-
         public Operacao(EnumOperacao op, int tMin, int tMax, int idFilaDestino, decimal probabilidade)
         {
             this.Op = op;
