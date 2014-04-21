@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ArrayOfFila>
+  <Fila xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <Id>1</Id>
+    <Servidores>2</Servidores>
+    <Capacidade>3</Capacidade>
+    <Quantidade>0</Quantidade>
+    <Perdas>0</Perdas>
+    <Chegadas>0</Chegadas>
+    <TemPassagem>true</TemPassagem>
+    <TemSaida>false</TemSaida>
+    <TemProbabilidade>false</TemProbabilidade>
+    <Operacoes>
+      <Operacao>
+        <Op>Chegada</Op>
+        <tMin>1</tMin>
+        <tMax>2</tMax>
+        <IdFilaDestino>0</IdFilaDestino>
+        <Probabilidade>0</Probabilidade>
+      </Operacao>
+      <Operacao>
+        <Op>Passagem</Op>
+        <tMin>2</tMin>
+        <tMax>3</tMax>
+        <IdFilaDestino>2</IdFilaDestino>
+        <Probabilidade>0</Probabilidade>
+      </Operacao>
+    </Operacoes>
+    <Tempo>0</Tempo>
+  </Fila>
+</ArrayOfFila>

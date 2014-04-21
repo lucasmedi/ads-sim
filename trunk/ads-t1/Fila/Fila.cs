@@ -24,6 +24,8 @@ namespace ads_t1
 
         public List<Agendamento> Agendamento { get; set; }
         public decimal Tempo { get; set; }
+
+        public Fila() { }
         
         public Fila(int id, int servidores, int capacidade)
         {

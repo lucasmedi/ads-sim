@@ -63,7 +63,7 @@ namespace ads_t1
                     Console.Write("** Tempos  - ");
                     foreach (var tempo in subitem.Tempos)
                     {
-                        Console.Write("{0}: {1} ", tempo.Key, tempo.Value);
+                        Console.Write("{0}: {1} / ", tempo.Key, tempo.Value);
                     }
                     Console.Write("\n");
                 }
