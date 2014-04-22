@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Xml.Serialization;
-using System.Text;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace ads_t1
 {
@@ -153,44 +155,44 @@ namespace ads_t1
             // 0,6 4..5 ut SA2
             // 0,4 4..5 ut P21
 
-            id = 0;
-            simulador = new Simulador(new decimal[] {
-                Convert.ToDecimal(0.3281),
-                Convert.ToDecimal(0.1133),
-                Convert.ToDecimal(0.3332),
-                Convert.ToDecimal(0.5634),
-                Convert.ToDecimal(0.1099),
-                Convert.ToDecimal(0.1221),
-                Convert.ToDecimal(0.7271),
-                Convert.ToDecimal(0.0301),
-                Convert.ToDecimal(0.8291),
-                Convert.ToDecimal(0.3131),
-                Convert.ToDecimal(0.5232),
-                Convert.ToDecimal(0.7291),
-                Convert.ToDecimal(0.9129),
-                Convert.ToDecimal(0.8723),
-                Convert.ToDecimal(0.4101),
-                Convert.ToDecimal(0.2209)
-            });
+            //id = 0;
+            //simulador = new Simulador(new decimal[] {
+            //    Convert.ToDecimal(0.3281),
+            //    Convert.ToDecimal(0.1133),
+            //    Convert.ToDecimal(0.3332),
+            //    Convert.ToDecimal(0.5634),
+            //    Convert.ToDecimal(0.1099),
+            //    Convert.ToDecimal(0.1221),
+            //    Convert.ToDecimal(0.7271),
+            //    Convert.ToDecimal(0.0301),
+            //    Convert.ToDecimal(0.8291),
+            //    Convert.ToDecimal(0.3131),
+            //    Convert.ToDecimal(0.5232),
+            //    Convert.ToDecimal(0.7291),
+            //    Convert.ToDecimal(0.9129),
+            //    Convert.ToDecimal(0.8723),
+            //    Convert.ToDecimal(0.4101),
+            //    Convert.ToDecimal(0.2209)
+            //});
 
-            id++;
-            fila1 = new Fila(id, 2, 3);
-            fila1.AdicionaOperacao(EnumOperacao.Chegada, 1, 2);
-            simulador.AdicionaFila(fila1);
+            //id++;
+            //fila1 = new Fila(id, 2, 3);
+            //fila1.AdicionaOperacao(EnumOperacao.Chegada, 1, 2);
+            //simulador.AdicionaFila(fila1);
 
-            id++;
-            fila2 = new Fila(id, 3, 5);
-            fila2.AdicionaOperacao(EnumOperacao.Chegada, 1, 2);
-            fila2.AdicionaOperacao(EnumOperacao.Saida, 4, 5, 0, (decimal)0.6);
-            simulador.AdicionaFila(fila2);
+            //id++;
+            //fila2 = new Fila(id, 3, 5);
+            //fila2.AdicionaOperacao(EnumOperacao.Chegada, 1, 2);
+            //fila2.AdicionaOperacao(EnumOperacao.Saida, 4, 5, 0, (decimal)0.6);
+            //simulador.AdicionaFila(fila2);
 
-            fila1.AdicionaOperacao(EnumOperacao.Passagem, 2, 3, fila2.Id);
-            fila2.AdicionaOperacao(EnumOperacao.Passagem, 4, 5, fila1.Id, (decimal)0.4);
+            //fila1.AdicionaOperacao(EnumOperacao.Passagem, 2, 3, fila2.Id);
+            //fila2.AdicionaOperacao(EnumOperacao.Passagem, 4, 5, fila1.Id, (decimal)0.4);
 
-            simulador.AgendaInicio(fila1.Id, EnumOperacao.Chegada, (decimal)2.0);
-            simulador.AgendaInicio(fila2.Id, EnumOperacao.Chegada, (decimal)1.0);
+            //simulador.AgendaInicio(fila1.Id, EnumOperacao.Chegada, (decimal)2.0);
+            //simulador.AgendaInicio(fila2.Id, EnumOperacao.Chegada, (decimal)1.0);
 
-            simulador.Iniciar();
+            //simulador.Iniciar();
 
             #endregion
 
@@ -243,9 +245,49 @@ namespace ads_t1
 
             LeArquivo leArquivo = new LeArquivo(@"C:\Users\Giovanni_2\Dropbox\PUCRS\Avaliação de desempenho de software\Trabalho 1\ads-sim");
 
-            List<Fila> filas = leArquivo.carregaConteudo();
-            filas = leArquivo.carregaConteudo();
+            while (leArquivo.temArquivo())
+            {
+                string conteudo = leArquivo.carregaConteudo();
+                var xDoc = XDocument.Load(conteudo);
 
+                // your posted query
+                var filasDocs = xDoc.Descendants("filas").Elements("fila").ToList();
+                var chegadasDocs = xDoc.Descendants("chegadas").Elements("chegada").ToList();
+                var configuracaoDocs = xDoc.Descendants("configuracao").First();
+
+                var filas = new List<Fila>();
+                foreach (var fila in filasDocs)
+                {
+                    var idfila = Convert.ToInt32(fila.Element("id").Value);
+                    var servidores = Convert.ToInt32(fila.Element("servidores").Value);
+                    var capacidade = Convert.ToInt32(fila.Element("capacidade").Value);
+                    Fila novaFila = new Fila(idfila, servidores, capacidade);
+
+                    var operacoesDocs = fila.Descendants("operacoes").Elements("operacao").ToList();
+                    foreach (var operacao in operacoesDocs)
+                    {
+                        var op = operacao.Element("op").Value;
+                        var tMin = Convert.ToInt32(operacao.Element("tmin").Value);
+                        var tMax = Convert.ToInt32(operacao.Element("tmax").Value);
+                        var idfiladestino = Convert.ToInt32(operacao.Element("idfiladestino").Value);
+                        var probabilidade = Convert.ToDecimal(operacao.Element("probabilidade").Value);
+                        novaFila.AdicionaOperacao(EnumOperacao.Chegada, tMin, tMax, idfiladestino, probabilidade);
+
+                    }
+
+                }
+
+                foreach (var chegada in chegadasDocs)
+                {
+                    var idfila = chegada.Element("idfila").Value;
+                    var opChegada = chegada.Element("opChegada").Value;
+                    var tempo = chegada.Element("tempo").Value;
+                }
+
+                var semente = configuracaoDocs.Element("semente").Value;
+                var nroaleatorios = configuracaoDocs.Element("nroaleatorios").Value;
+
+            }
 
             id = 0;
             simulador = new Simulador(new decimal[] {
