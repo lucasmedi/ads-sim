@@ -29,12 +29,22 @@ namespace ads_t1
                 return false;
         }
 
-        public string carregaConteudo()
+        public XDocument carregaConteudo()
         {
-            if (Arquivos.Count == 0)
-                return null;
+            try
+            {
+                if (Arquivos.Count == 0)
+                {
+                    return null;
+                }
 
-            return Arquivos.Dequeue();
+                return XDocument.Load(Arquivos.Dequeue());
+
+            }
+            catch (XmlException e)
+            {
+                throw e;
+            }
         }
 
     }

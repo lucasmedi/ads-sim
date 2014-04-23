@@ -217,7 +217,14 @@ namespace ads_t1
             rowIndex++;
             row = sheet.CreateRow(rowIndex);
             row.CreateCell(0).SetCellValue("%Perdas:");
-            row.CreateCell(1).SetCellValue(string.Format("{0}%", Math.Round(((this.Perdas / (decimal)(this.Chegadas+this.Perdas)) * (decimal)100), 2).ToString()));
+            if ((this.Chegadas + this.Perdas) == 0)
+            {
+                row.CreateCell(1).SetCellValue(string.Format("{0}%","0"));
+            }
+            else
+            {
+                row.CreateCell(1).SetCellValue(string.Format("{0}%", Math.Round(((this.Perdas / (decimal)(this.Chegadas + this.Perdas)) * (decimal)100), 2).ToString()));
+            }
 
             return rowIndex;
         }
