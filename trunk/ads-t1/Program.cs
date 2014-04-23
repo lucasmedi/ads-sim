@@ -243,90 +243,113 @@ namespace ads_t1
             #region Teste 7
 
 
-            LeArquivo leArquivo = new LeArquivo(@"C:\Users\Giovanni_2\Dropbox\PUCRS\Avaliação de desempenho de software\Trabalho 1\ads-sim");
+            LeArquivo leArquivo = new LeArquivo(@"entrada\");
 
-            while (leArquivo.temArquivo())
+            do
             {
-                string conteudo = leArquivo.carregaConteudo();
-                var xDoc = XDocument.Load(conteudo);
+                simulador = new Simulador(new decimal[] {
+                    Convert.ToDecimal(0.3281),
+                    Convert.ToDecimal(0.1133),
+                    Convert.ToDecimal(0.3332),
+                    Convert.ToDecimal(0.5634),
+                    Convert.ToDecimal(0.1099),
+                    Convert.ToDecimal(0.1221),
+                    Convert.ToDecimal(0.7271),
+                    Convert.ToDecimal(0.0301),
+                    Convert.ToDecimal(0.8291),
+                    Convert.ToDecimal(0.3131),
+                    Convert.ToDecimal(0.5232),
+                    Convert.ToDecimal(0.7291),
+                    Convert.ToDecimal(0.9129),
+                    Convert.ToDecimal(0.8723),
+                    Convert.ToDecimal(0.4101),
+                    Convert.ToDecimal(0.2209),
+                    //inventados
+                    Convert.ToDecimal(0.8003),
+                    Convert.ToDecimal(0.5361),
+                    Convert.ToDecimal(0.1289),
+                    Convert.ToDecimal(0.0456),
+                    Convert.ToDecimal(0.7539),
+                    Convert.ToDecimal(0.3851),
+                    Convert.ToDecimal(0.8069),
+                    Convert.ToDecimal(0.7893),
+                    Convert.ToDecimal(0.6977),
+                    Convert.ToDecimal(0.987),
+                    Convert.ToDecimal(0.0187),
+                    Convert.ToDecimal(0.5102)
+                });
 
-                // your posted query
+                var xDoc = leArquivo.carregaConteudo();
+
                 var filasDocs = xDoc.Descendants("filas").Elements("fila").ToList();
                 var chegadasDocs = xDoc.Descendants("chegadas").Elements("chegada").ToList();
                 var configuracaoDocs = xDoc.Descendants("configuracao").First();
 
-                var filas = new List<Fila>();
-                foreach (var fila in filasDocs)
-                {
-                    var idfila = Convert.ToInt32(fila.Element("id").Value);
-                    var servidores = Convert.ToInt32(fila.Element("servidores").Value);
-                    var capacidade = Convert.ToInt32(fila.Element("capacidade").Value);
-                    Fila novaFila = new Fila(idfila, servidores, capacidade);
-
-                    var operacoesDocs = fila.Descendants("operacoes").Elements("operacao").ToList();
-                    foreach (var operacao in operacoesDocs)
-                    {
-                        var op = operacao.Element("op").Value;
-                        var tMin = Convert.ToInt32(operacao.Element("tmin").Value);
-                        var tMax = Convert.ToInt32(operacao.Element("tmax").Value);
-                        var idfiladestino = Convert.ToInt32(operacao.Element("idfiladestino").Value);
-                        var probabilidade = Convert.ToDecimal(operacao.Element("probabilidade").Value);
-                        novaFila.AdicionaOperacao(EnumOperacao.Chegada, tMin, tMax, idfiladestino, probabilidade);
-
-                    }
-
-                }
-
-                foreach (var chegada in chegadasDocs)
-                {
-                    var idfila = chegada.Element("idfila").Value;
-                    var opChegada = chegada.Element("opChegada").Value;
-                    var tempo = chegada.Element("tempo").Value;
-                }
-
+                //Tag Semente
                 var semente = configuracaoDocs.Element("semente").Value;
                 var nroaleatorios = configuracaoDocs.Element("nroaleatorios").Value;
 
-            }
+                //Tag Fila
+                foreach (var filaDoc in filasDocs)
+                {
+                    var idfila = Int32.Parse(filaDoc.Element("id").Value);
+                    var servidores = Int32.Parse(filaDoc.Element("servidores").Value);
+                    var capacidade = Int32.Parse(filaDoc.Element("capacidade").Value);
+                    
+                    Fila fila = new Fila(idfila, servidores, capacidade);
 
-            id = 0;
-            simulador = new Simulador(new decimal[] {
-                Convert.ToDecimal(0.3281),
-                Convert.ToDecimal(0.1133),
-                Convert.ToDecimal(0.3332),
-                Convert.ToDecimal(0.5634),
-                Convert.ToDecimal(0.1099),
-                Convert.ToDecimal(0.1221),
-                Convert.ToDecimal(0.7271),
-                Convert.ToDecimal(0.0301),
-                Convert.ToDecimal(0.8291),
-                Convert.ToDecimal(0.3131),
-                Convert.ToDecimal(0.5232),
-                Convert.ToDecimal(0.7291),
-                Convert.ToDecimal(0.9129),
-                Convert.ToDecimal(0.8723),
-                Convert.ToDecimal(0.4101),
-                Convert.ToDecimal(0.2209)
-            });
+                    simulador.AdicionaFila(fila);
 
-            id++;
-            fila1 = new Fila(id, 2, 3);
-            fila1.AdicionaOperacao(EnumOperacao.Chegada, 1, 2);
-            simulador.AdicionaFila(fila1);
+                    //Tag Operacoes
+                    var operacoesDocs = filaDoc.Descendants("operacoes").Elements("operacao").ToList();
+                    foreach (var operacao in operacoesDocs)
+                    {
+                        var op = operacao.Element("op").Value;
 
-            id++;
-            fila2 = new Fila(id, 3, 5);
-            fila2.AdicionaOperacao(EnumOperacao.Chegada, 1, 2);
-            fila2.AdicionaOperacao(EnumOperacao.Saida, 4, 5, 0, (decimal)0.6);
-            simulador.AdicionaFila(fila2);
+                        int tempoMin = 0;
+                        if(operacao.Element("tmin") != null)
+                        {
+                            tempoMin = Convert.ToInt32(operacao.Element("tmin").Value);
+                            
+                        }
 
-            fila1.AdicionaOperacao(EnumOperacao.Passagem, 2, 3, fila2.Id);
-            fila2.AdicionaOperacao(EnumOperacao.Passagem, 4, 5, fila1.Id, (decimal)0.4);
+                        int tempoMax = 0;
 
-            simulador.AgendaInicio(fila1.Id, EnumOperacao.Chegada, (decimal)2.0);
-            simulador.AgendaInicio(fila2.Id, EnumOperacao.Chegada, (decimal)1.0);
+                        if (operacao.Element("tmax") != null)
+                        {
+                            tempoMax = Convert.ToInt32(operacao.Element("tmax").Value);
+                        }
 
-            simulador.Iniciar();
+                        int idfiladestino = 0;
+                        if (operacao.Element("idfiladestino") != null)
+                        {
+                            idfiladestino = Int32.Parse(operacao.Element("idfiladestino").Value);
+                        }
+
+                        decimal probabilidade = 0;
+                        if (operacao.Element("probabilidade") != null)
+                        {
+                            probabilidade = Decimal.Parse(operacao.Element("probabilidade").Value);
+                        }
+
+                        fila.AdicionaOperacao((EnumOperacao)Int32.Parse(op), tempoMin, tempoMax, idfiladestino, probabilidade);
+
+                    }
+                }
+
+                //Tag Chegada
+                foreach (var chegada in chegadasDocs)
+                {
+                    var idfila = Int32.Parse(chegada.Element("idfila").Value);
+                    var opChegada = chegada.Element("opChegada").Value;
+                    var tempo = Decimal.Parse(chegada.Element("tempo").Value);
+
+                    simulador.AgendaInicio(idfila, (EnumOperacao)Int32.Parse(opChegada), tempo);
+                }
+
+                simulador.Iniciar();
+
+            } while (leArquivo.temArquivo());
 
             #endregion
 

@@ -26,7 +26,7 @@ namespace ads_t1
             rowIndex += 3;
             registro.ImprimeRelatorio(sheet, rowIndex);
 
-            var file = new FileStream(string.Format("relatorio_{0}.xls", DateTime.Now.Ticks), FileMode.Create);
+            var file = new FileStream(string.Format(@"resultados\relatorio_{0}.xls", DateTime.Now.Ticks), FileMode.Create);
             workbook.Write(file);
             file.Close();
         }
