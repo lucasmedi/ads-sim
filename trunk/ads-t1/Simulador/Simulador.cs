@@ -65,9 +65,6 @@ namespace ads_t1
                 }
             } while (!sair);
 
-            agendador.Imprime();
-            registro.Imprime();
-
             Export.GeraExcel(filas, agendador, registro);
         }
 

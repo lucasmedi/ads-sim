@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace ads_t1
 {
@@ -242,41 +238,12 @@ namespace ads_t1
 
             #region Teste 7
 
-
-            LeArquivo leArquivo = new LeArquivo(@"entrada\");
+            var leArquivo = new LeArquivo(@"entrada\");
 
             do
             {
                 simulador = new Simulador(new decimal[] {
-                    Convert.ToDecimal(0.3281),
-                    Convert.ToDecimal(0.1133),
-                    Convert.ToDecimal(0.3332),
-                    Convert.ToDecimal(0.5634),
-                    Convert.ToDecimal(0.1099),
-                    Convert.ToDecimal(0.1221),
-                    Convert.ToDecimal(0.7271),
-                    Convert.ToDecimal(0.0301),
-                    Convert.ToDecimal(0.8291),
-                    Convert.ToDecimal(0.3131),
-                    Convert.ToDecimal(0.5232),
-                    Convert.ToDecimal(0.7291),
-                    Convert.ToDecimal(0.9129),
-                    Convert.ToDecimal(0.8723),
-                    Convert.ToDecimal(0.4101),
-                    Convert.ToDecimal(0.2209),
-                    //inventados
-                    Convert.ToDecimal(0.8003),
-                    Convert.ToDecimal(0.5361),
-                    Convert.ToDecimal(0.1289),
-                    Convert.ToDecimal(0.0456),
-                    Convert.ToDecimal(0.7539),
-                    Convert.ToDecimal(0.3851),
-                    Convert.ToDecimal(0.8069),
-                    Convert.ToDecimal(0.7893),
-                    Convert.ToDecimal(0.6977),
-                    Convert.ToDecimal(0.987),
-                    Convert.ToDecimal(0.0187),
-                    Convert.ToDecimal(0.5102)
+                    
                 });
 
                 var xDoc = leArquivo.carregaConteudo();
@@ -329,7 +296,7 @@ namespace ads_t1
                         decimal probabilidade = 0;
                         if (operacao.Element("probabilidade") != null)
                         {
-                            probabilidade = Decimal.Parse(operacao.Element("probabilidade").Value);
+                            probabilidade = Decimal.Parse(operacao.Element("probabilidade").Value.Replace(".", ","));
                         }
 
                         fila.AdicionaOperacao((EnumOperacao)Int32.Parse(op), tempoMin, tempoMax, idfiladestino, probabilidade);
@@ -341,10 +308,9 @@ namespace ads_t1
                 foreach (var chegada in chegadasDocs)
                 {
                     var idfila = Int32.Parse(chegada.Element("idfila").Value);
-                    var opChegada = chegada.Element("opChegada").Value;
-                    var tempo = Decimal.Parse(chegada.Element("tempo").Value);
+                    var tempo = Decimal.Parse(chegada.Element("tempo").Value.Replace(".", ","));
 
-                    simulador.AgendaInicio(idfila, (EnumOperacao)Int32.Parse(opChegada), tempo);
+                    simulador.AgendaInicio(idfila, EnumOperacao.Chegada, tempo);
                 }
 
                 simulador.Iniciar();
@@ -352,10 +318,6 @@ namespace ads_t1
             } while (leArquivo.temArquivo());
 
             #endregion
-
-            Console.ReadKey();
         }
     }
-
-
 }

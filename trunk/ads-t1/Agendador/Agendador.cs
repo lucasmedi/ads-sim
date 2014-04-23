@@ -91,13 +91,6 @@ namespace ads_t1
             return evento;
         }
 
-        public void Imprime()
-        {
-            Console.WriteLine("\n**** Agenda de Eventos *****");
-            foreach (var item in Eventos)
-                Console.WriteLine("({0}) {1}{2}{3} | Tempo: {4} | Sorteio: {5}", item.Id, EnumHelper.Escreve(item.Operacao), item.IdFila, (item.IdFilaDestino > 0 ? item.IdFilaDestino.ToString() : string.Empty), item.Tempo, item.Sorteio);
-        }
-
         public int ImprimeRelatorio(ISheet sheet, int rowIndex)
         {
             sheet.CreateRow(rowIndex).CreateCell(0).SetCellValue("**** Agenda de Eventos ****");
