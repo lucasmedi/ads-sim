@@ -51,25 +51,6 @@ namespace ads_t1
             itens.Add(item);
         }
 
-        public void Imprime()
-        {
-            Console.WriteLine("\n**** Tabela de Eventos ****");
-            foreach (var item in itens)
-            {
-                Console.WriteLine("> {0} - {1} ", item.Id, item.TempoTotal);
-                foreach (var subitem in item.Filas)
-                {
-                    Console.WriteLine("* Fila {0} - Capacidade: {1}", subitem.IdFila, subitem.Quantidade);
-                    Console.Write("** Tempos  - ");
-                    foreach (var tempo in subitem.Tempos)
-                    {
-                        Console.Write("{0}: {1} / ", tempo.Key, tempo.Value);
-                    }
-                    Console.Write("\n");
-                }
-            }
-        }
-
         public int ImprimeRelatorio(ISheet sheet, int rowIndex)
         {
             sheet.CreateRow(rowIndex).CreateCell(0).SetCellValue("**** Tabela de Eventos ****");
