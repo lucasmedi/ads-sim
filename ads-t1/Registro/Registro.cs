@@ -6,6 +6,9 @@ using NPOI.SS.Util;
 
 namespace ads_t1
 {
+    /// <summary>
+    /// Classe responsável por manter tabela de eventos
+    /// </summary>
     public class Registro
     {
         private List<RegistroItem> itens;
@@ -16,6 +19,11 @@ namespace ads_t1
             itens.Add(new RegistroItem(filas));
         }
 
+        /// <summary>
+        /// Adiciona evento ao registro de eventos
+        /// </summary>
+        /// <param name="evento"></param>
+        /// <param name="filas"></param>
         public void AdicionaEvento(IEvento evento, List<Fila> filas)
         {
             var item = new RegistroItem
@@ -48,59 +56,67 @@ namespace ads_t1
                 item.Filas.Add(regFila);
             }
 
-            //if (itens.Count > 5)
-            //    itens.RemoveRange(0, 2);
+            // Limpa histórico permanecendo com apenas última linha
+            // TODO: Escrever sob demanda em arquivo manter o registro completo, sem OutOfMemoryException
+            if (itens.Count > 2)
+                itens.RemoveRange(0, 1);
 
             itens.Add(item);
         }
 
+        /// <summary>
+        /// Imprime tabela de eventos no relatório de estatísticas da execução
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <param name="rowIndex"></param>
+        /// <returns></returns>
         public int ImprimeRelatorio(ISheet sheet, int rowIndex)
         {
-            sheet.CreateRow(rowIndex).CreateCell(0).SetCellValue("**** Tabela de Eventos ****");
-            sheet.AddMergedRegion(new CellRangeAddress(rowIndex, rowIndex, 0, 3));
+            //sheet.CreateRow(rowIndex).CreateCell(0).SetCellValue("**** Tabela de Eventos ****");
+            //sheet.AddMergedRegion(new CellRangeAddress(rowIndex, rowIndex, 0, 3));
 
             rowIndex++;
             var row = sheet.CreateRow(rowIndex);
 
-            row.CreateCell(0).SetCellValue("Id");
-            row.CreateCell(1).SetCellValue("Tempo Total");
+            //row.CreateCell(0).SetCellValue("Id");
+            //row.CreateCell(1).SetCellValue("Tempo Total");
 
             var bFirstRow = true;
 
-            foreach (var item in itens)
-            {
-                var cellIndex = 0;
-                rowIndex++;
-                row = sheet.CreateRow(rowIndex);
-                row.CreateCell(cellIndex).SetCellValue(item.Id);
+            //foreach (var item in itens)
+            //{
+            //    var cellIndex = 0;
+            //    rowIndex++;
+            //    row = sheet.CreateRow(rowIndex);
+            //    row.CreateCell(cellIndex).SetCellValue(item.Id);
 
-                cellIndex++;
-                row.CreateCell(cellIndex).SetCellValue(item.TempoTotal.ToString());
+            //    cellIndex++;
+            //    row.CreateCell(cellIndex).SetCellValue(item.TempoTotal.ToString());
 
-                foreach (var subitem in item.Filas)
-                {
-                    cellIndex++;
-                    if (bFirstRow)
-                    {
-                        sheet.GetRow(rowIndex - 1).CreateCell(cellIndex).SetCellValue(string.Format("Fila {0}", subitem.IdFila));
-                    }
+            //    foreach (var subitem in item.Filas)
+            //    {
+            //        cellIndex++;
+            //        if (bFirstRow)
+            //        {
+            //            sheet.GetRow(rowIndex - 1).CreateCell(cellIndex).SetCellValue(string.Format("Fila {0}", subitem.IdFila));
+            //        }
 
-                    row.CreateCell(cellIndex).SetCellValue(subitem.Quantidade);
-                    foreach (var tempo in subitem.Tempos.Keys)
-                    {
-                        cellIndex++;
-                        if (bFirstRow)
-                        {
-                            sheet.GetRow(rowIndex - 1).CreateCell(cellIndex).SetCellValue(tempo);
-                        }
+            //        row.CreateCell(cellIndex).SetCellValue(subitem.Quantidade);
+            //        foreach (var tempo in subitem.Tempos.Keys)
+            //        {
+            //            cellIndex++;
+            //            if (bFirstRow)
+            //            {
+            //                sheet.GetRow(rowIndex - 1).CreateCell(cellIndex).SetCellValue(tempo);
+            //            }
 
-                        row.CreateCell(cellIndex).SetCellValue(subitem.Tempos[tempo].ToString());
-                    }
-                }
+            //            row.CreateCell(cellIndex).SetCellValue(subitem.Tempos[tempo].ToString());
+            //        }
+            //    }
 
-                if (bFirstRow)
-                    bFirstRow = false;
-            }
+            //    if (bFirstRow)
+            //        bFirstRow = false;
+            //}
 
             rowIndex += 2;
             var proporcao = itens.Last();

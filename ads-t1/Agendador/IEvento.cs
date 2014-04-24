@@ -1,6 +1,9 @@
 ﻿
 namespace ads_t1
 {
+    /// <summary>
+    /// Interface de evento
+    /// </summary>
     public interface IEvento
     {
         int Id { get; set; }

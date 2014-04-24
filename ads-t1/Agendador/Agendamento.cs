@@ -1,6 +1,9 @@
 ﻿
 namespace ads_t1
 {
+    /// <summary>
+    /// Classe que define um agendamento
+    /// </summary>
     public class Agendamento
     {
         public EnumOperacao Operacao { get; set; }

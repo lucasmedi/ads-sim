@@ -1,6 +1,9 @@
 ﻿
 namespace ads_t1
 {
+    /// <summary>
+    /// Interface de fila
+    /// </summary>
     public interface IFila
     {
         int Id { get; set; }
