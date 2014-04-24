@@ -1,6 +1,9 @@
 ﻿
 namespace ads_t1
 {
+    /// <summary>
+    /// Classe que especifica um evento
+    /// </summary>
     public class Evento : IEvento
     {
         public int Id { get; set; }

@@ -64,6 +64,7 @@
     <Compile Include="Fila\IFila.cs" />
     <Compile Include="Fila\Operacao.cs" />
     <Compile Include="LeArquivos\LeArquivo.cs" />
+    <Compile Include="Simulador\AppHelper.cs" />
     <Compile Include="Simulador\Enums.cs" />
     <Compile Include="Agendador\Evento.cs" />
     <Compile Include="Agendador\IEvento.cs" />

@@ -1,6 +1,9 @@
 ﻿
 namespace ads_t1
 {
+    /// <summary>
+    /// Classe que especifica uma operação
+    /// </summary>
     public class Operacao
     {
         public EnumOperacao Op { get; set; }

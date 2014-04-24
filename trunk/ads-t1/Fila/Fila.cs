@@ -5,6 +5,9 @@ using NPOI.SS.UserModel;
 
 namespace ads_t1
 {
+    /// <summary>
+    /// Classe responsável por definir a fila e suas operações
+    /// </summary>
     public class Fila : IFila
     {
         public int Id { get; set; }
@@ -34,6 +37,14 @@ namespace ads_t1
             Capacidade = capacidade;
         }
 
+        /// <summary>
+        /// Adiciona operação à lista de operações possíveis da fila
+        /// </summary>
+        /// <param name="op"></param>
+        /// <param name="tempoMin"></param>
+        /// <param name="tempoMax"></param>
+        /// <param name="idFilaDestino"></param>
+        /// <param name="probabilidade"></param>
         public void AdicionaOperacao(EnumOperacao op, int tempoMin, int tempoMax, int idFilaDestino = 0, decimal probabilidade = 0)
         {
             Operacoes.Add(new Operacao(op, tempoMin, tempoMax, idFilaDestino, probabilidade));
@@ -48,6 +59,11 @@ namespace ads_t1
                 TemPassagem = true;
         }
 
+        /// <summary>
+        /// Encaminha o evento informado para sua execução
+        /// </summary>
+        /// <param name="evento"></param>
+        /// <returns>Lista de agendamentos a serem feitos</returns>
         public List<Agendamento> Executa(IEvento evento)
         {
             Agendamento = new List<Agendamento>();
@@ -71,8 +87,13 @@ namespace ads_t1
             return Agendamento;
         }
 
-        public void Agenda(EnumOperacao op)
+        /// <summary>
+        /// Adiciona operação no agendamento para ser passada à classe Agendador
+        /// </summary>
+        /// <param name="op"></param>
+        private void Agenda(EnumOperacao op)
         {
+            // Se houver probabilidade envolvida, tratar especialmente
             if (op != EnumOperacao.Probabilidade)
             {
                 var operacao = Operacoes.Where(o => o.Op == op).First();
@@ -89,8 +110,7 @@ namespace ads_t1
             }
             else
             {
-                var operacao = Operacoes.OrderByDescending(o => o.Probabilidade).First();
-
+                // Tendo probabilidade, adicionar todas as operações possíveis para posterior definição de qual será agendada
                 foreach (var item in Operacoes.Where(o => o.Probabilidade > 0).OrderByDescending(o => o.Probabilidade))
                 {
                     Agendamento.Add(new Agendamento
@@ -106,6 +126,10 @@ namespace ads_t1
             }
         }
 
+        /// <summary>
+        /// Executa a operação de chegada
+        /// </summary>
+        /// <param name="bAgendaChegada">Indica necessisade de agendamento da operação de chegada</param>
         private void Chegada(bool bAgendaChegada = true)
         {
             if (Capacidade == 0 || Quantidade < Capacidade)
@@ -114,6 +138,7 @@ namespace ads_t1
                 Quantidade++;
                 if (Quantidade <= Servidores)
                 {
+                    // Caso haja probabilidade envolvida, trata especialmente
                     if (TemProbabilidade)
                     {
                         Agenda(EnumOperacao.Probabilidade);
@@ -140,6 +165,10 @@ namespace ads_t1
                 Agenda(EnumOperacao.Chegada);
         }
 
+        /// <summary>
+        /// Executa a operação de passagem
+        /// </summary>
+        /// <param name="bSaida">Indica se é operação de passagem na fila de origem ou destino</param>
         private void Passagem(bool bSaida = true)
         {
             if (bSaida)
@@ -150,6 +179,7 @@ namespace ads_t1
                 Quantidade--;
                 if (Quantidade >= Servidores)
                 {
+                    // Caso haja probabilidade envolvida, trata especialmente
                     if (TemProbabilidade)
                     {
                         Agenda(EnumOperacao.Probabilidade);
@@ -162,18 +192,23 @@ namespace ads_t1
             }
             else
             {
+                // Caso seja operação de passagem na fila destino, executar chegada sem agendamento de nova chegada no final
                 Chegada(false);
             }
         }
 
+        /// <summary>
+        /// Executa a operação de saída
+        /// </summary>
         private void Saida()
         {
             if (!TemSaida)
                 return;
 
             Quantidade--;
-            if (Quantidade >= 1)
+            if (Quantidade >= Servidores)
             {
+                // Caso haja probabilidade envolvida, trata especialmente
                 if (TemProbabilidade)
                 {
                     Agenda(EnumOperacao.Probabilidade);
@@ -185,9 +220,15 @@ namespace ads_t1
             }
         }
 
+        /// <summary>
+        /// Imprime dados da fila no relatórios de estatísticas da execução
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <param name="rowIndex"></param>
+        /// <returns></returns>
         public int ImprimeRelatorio(ISheet sheet, int rowIndex)
         {
-            rowIndex++;
+            rowIndex += 2;
             var row = sheet.CreateRow(rowIndex);
             row.CreateCell(0).SetCellValue(string.Format("Fila {0}", this.Id));
             row.CreateCell(1).SetCellValue(string.Format("G/G/{0}/{1}", this.Servidores, this.Capacidade));

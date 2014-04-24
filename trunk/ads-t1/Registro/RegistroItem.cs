@@ -2,6 +2,9 @@
 
 namespace ads_t1
 {
+    /// <summary>
+    /// Classe que controla um registro da tabela de eventos
+    /// </summary>
     public class RegistroItem
     {
         public string Id { get; set; }
