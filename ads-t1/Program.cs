@@ -242,9 +242,7 @@ namespace ads_t1
 
             do
             {
-                simulador = new Simulador(new decimal[] {
-                    
-                });
+                simulador = new Simulador(572, 200);
 
                 var xDoc = leArquivo.carregaConteudo();
 
@@ -252,22 +250,22 @@ namespace ads_t1
                 var chegadasDocs = xDoc.Descendants("chegadas").Elements("chegada").ToList();
                 var configuracaoDocs = xDoc.Descendants("configuracao").First();
 
-                //Tag Semente
+                // tag semente
                 var semente = configuracaoDocs.Element("semente").Value;
                 var nroaleatorios = configuracaoDocs.Element("nroaleatorios").Value;
 
-                //Tag Fila
+                // tag fila
                 foreach (var filaDoc in filasDocs)
                 {
                     var idfila = Int32.Parse(filaDoc.Element("id").Value);
                     var servidores = Int32.Parse(filaDoc.Element("servidores").Value);
                     var capacidade = Int32.Parse(filaDoc.Element("capacidade").Value);
                     
-                    Fila fila = new Fila(idfila, servidores, capacidade);
+                    var fila = new Fila(idfila, servidores, capacidade);
 
                     simulador.AdicionaFila(fila);
 
-                    //Tag Operacoes
+                    // tag operacoes
                     var operacoesDocs = filaDoc.Descendants("operacoes").Elements("operacao").ToList();
                     foreach (var operacao in operacoesDocs)
                     {
@@ -277,11 +275,9 @@ namespace ads_t1
                         if(operacao.Element("tmin") != null)
                         {
                             tempoMin = Convert.ToInt32(operacao.Element("tmin").Value);
-                            
                         }
 
                         int tempoMax = 0;
-
                         if (operacao.Element("tmax") != null)
                         {
                             tempoMax = Convert.ToInt32(operacao.Element("tmax").Value);
@@ -300,11 +296,10 @@ namespace ads_t1
                         }
 
                         fila.AdicionaOperacao((EnumOperacao)Int32.Parse(op), tempoMin, tempoMax, idfiladestino, probabilidade);
-
                     }
                 }
 
-                //Tag Chegada
+                // tag chegada
                 foreach (var chegada in chegadasDocs)
                 {
                     var idfila = Int32.Parse(chegada.Element("idfila").Value);
