@@ -51,6 +51,12 @@ namespace ads_t1
                     {
                         fila = filas.Where(o => o.Id == evento.IdFilaDestino).First();
                         agendamento = fila.Executa(evento);
+                        if (agendamento.Count(o => o.Probabilidade > 0) > 0)
+                        {
+                            agendador.AgendarProbabilidade(fila.Id, agendamento.Where(o => o.Probabilidade > 0).ToList());
+                            agendamento.RemoveAll(o => o.Probabilidade > 0);
+                        }
+
                         foreach (var item in agendamento)
                         {
                             agendador.Agendar(fila.Id, item.Operacao, item.TempoAtual, item.vMin, item.vMax, item.IdFilaDestino, item.Probabilidade);

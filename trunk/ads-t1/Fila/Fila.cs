@@ -104,8 +104,6 @@ namespace ads_t1
                     });
                 }
             }
-
-            
         }
 
         private void Chegada(bool bAgendaChegada = true)

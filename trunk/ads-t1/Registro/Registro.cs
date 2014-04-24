@@ -48,6 +48,9 @@ namespace ads_t1
                 item.Filas.Add(regFila);
             }
 
+            //if (itens.Count > 5)
+            //    itens.RemoveRange(0, 2);
+
             itens.Add(item);
         }
 
@@ -90,7 +93,7 @@ namespace ads_t1
                         {
                             sheet.GetRow(rowIndex - 1).CreateCell(cellIndex).SetCellValue(tempo);
                         }
-                        
+
                         row.CreateCell(cellIndex).SetCellValue(subitem.Tempos[tempo].ToString());
                     }
                 }

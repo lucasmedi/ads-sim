@@ -76,6 +76,9 @@ namespace ads_t1
                 }
             }
 
+            if (ag == null)
+                ag = agenda.OrderBy(o => o.Probabilidade).First();
+
             return Agendar(idFila, ag.Operacao, ag.TempoAtual, ag.vMin, ag.vMax, ag.IdFilaDestino, ag.Probabilidade);
         }
 
